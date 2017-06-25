@@ -4,9 +4,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
-//#include <unistd.h>
 #include <errno.h>
-//#include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <mosquitto.h>
@@ -101,7 +99,6 @@ void transport_receiver(unsigned char *buffer, size_t buffer_len) {
 							&& entry->obj_name->str[4] == 0) {
 						sprintf (msg, "%.4f", value);
 						mosquitto_publish (mosq, NULL, sm_counter_topic, strlen (msg), msg, 0, false);
-						//mosquitto_publish (mosq, NULL, "smart_meter/main/counter", strlen (msg), msg, 0, false);
 					}
 					// Check for object 16.7.0; smart meter current power usage //
 					if (entry->obj_name->str[2] == 16
@@ -109,7 +106,6 @@ void transport_receiver(unsigned char *buffer, size_t buffer_len) {
 							&& entry->obj_name->str[4] == 0) {
 						sprintf(msg, "%.0f", value);
 						mosquitto_publish (mosq, NULL, sm_current_topic, strlen (msg), msg, 0, false);
-						//mosquitto_publish (mosq, NULL, "smart_meter/main/current", strlen (msg), msg, 0, false);
 					}
 				}
 			}
