@@ -65,7 +65,7 @@ int serial_port_open(const char* device) {
 }
 
 void transport_receiver(unsigned char *buffer, size_t buffer_len) {
-	int i;
+	int i, ret;
 	double value;
 	char msg[20];
 
@@ -98,14 +98,22 @@ void transport_receiver(unsigned char *buffer, size_t buffer_len) {
 							&& entry->obj_name->str[3] == 8
 							&& entry->obj_name->str[4] == 0) {
 						sprintf (msg, "%.4f", value);
-						mosquitto_publish (mosq, NULL, sm_counter_topic, strlen (msg), msg, 0, false);
+						ret = mosquitto_publish (mosq, NULL, sm_counter_topic, strlen (msg), msg, 0, false);
+						if (ret) {
+							fprintf (stderr, "Error during pulishing message\n");
+							exit (-1);
+						}
 					}
 					// Check for object 16.7.0; smart meter current power usage //
 					if (entry->obj_name->str[2] == 16
 							&& entry->obj_name->str[3] == 7
 							&& entry->obj_name->str[4] == 0) {
 						sprintf(msg, "%.0f", value);
-						mosquitto_publish (mosq, NULL, sm_current_topic, strlen (msg), msg, 0, false);
+						ret = mosquitto_publish (mosq, NULL, sm_current_topic, strlen (msg), msg, 0, false);
+						if (ret) {
+							fprintf (stderr, "Error during pulishing message\n");
+							exit (-1);
+						}
 					}
 				}
 			}
