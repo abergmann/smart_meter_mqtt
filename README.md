@@ -1,6 +1,6 @@
 # smart_meter_mqtt
 
-Simple daemon that pushes SML messages to an MQTT broker.
+Simple daemon that receives SML messages from a smart meter and pushes the current power consumption and the smart meter counter to an MQTT broker.
 
 # Install
 
